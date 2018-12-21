@@ -1,0 +1,19 @@
+ctrl + shift + a   =   list opcji
+ctrl + alt + ins   =   nowy plik
+ctrl + tab   =   przelacz zakladke
+ctrl + e   =    lista plikow i nie tylko
+ctrl + n    =   znajdz klase
+ctrl + shift + n   =   znajdz plik
+ctrl + shift + alt + n   = znajdz symbol
+ctrl + alt + l   =   reformat code
+alt + enter   =    pokarz proponowana akcje
+ctrl + space   =    rozwin liste atrybutow
+ctrl + w   =   rozrzez zaznaczenie
+ctrl + shift + w   =   zmniejsz zaznaczenie
+ctrl + /   =   wykomentuj zaznaczenie
+ctrl + shift + /    =   odkomentuj zaznaczenie
+ctrl + alt + t   =    otocz znacznikiem
+ctrl + d   =   kopiuje bierzaca linie pod spodem
+
+alt + click   =   multiple writing
+alt + <-  /  alt + ->   =   zmien zakladke

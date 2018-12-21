@@ -1,0 +1,26 @@
+{
+  "name": "bodyfat",
+  "version": "1.0.0",
+  "description": "Web app to mesure and track body changes.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Fabi150/bodyfat.git"
+  },
+  "keywords": [
+    "bodyfat",
+    "fitness",
+    "body",
+    "tracking"
+  ],
+  "author": "Radoslaw Fabisiak",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4"
+  }
+}
