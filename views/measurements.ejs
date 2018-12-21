@@ -1,0 +1,43 @@
+<% include partials/header%>
+<h1>This is measurements page</h1>
+<% measurements.forEach(function (measurement) { %>
+    <div>
+        <h4><%= measurement.user%></h4>
+        <ul>
+            <li> user          : <%= measurement.user          %></li>
+            <li> date          : <%= measurement.date          %></li>
+            <li> weight        : <%= measurement.weight        %></li>
+            <li> neck          : <%= measurement.neck          %></li>
+            <li> waist         : <%= measurement.waist         %></li>
+            <li> hips          : <%= measurement.hips          %></li>
+            <li> shoulder      : <%= measurement.shoulder      %></li>
+            <li> chest         : <%= measurement.chest         %></li>
+            <li> arm_lef       : <%= measurement.arm_lef       %></li>
+            <li> arm_right     : <%= measurement.arm_right     %></li>
+            <li> forearm_left  : <%= measurement.forearm_left  %></li>
+            <li> forearm_right : <%= measurement.forearm_right %></li>
+            <li> thigh_left    : <%= measurement.thigh_left    %></li>
+            <li> thigh_right   : <%= measurement.thigh_right   %></li>
+            <li> calve_left    : <%= measurement.calve_left    %></li>
+            <li> calve_right   : <%= measurement.calve_right   %></li>
+            <li> wrist_left    : <%= measurement.wrist_left    %></li>
+            <li> wrist_right   : <%= measurement.wrist_right   %></li>
+            <li> pectoral      : <%= measurement.pectoral      %></li>
+            <li> abdominal     : <%= measurement.abdominal     %></li>
+            <li> thigh         : <%= measurement.thigh         %></li>
+            <li> triceps       : <%= measurement.triceps       %></li>
+            <li> suprailiac    : <%= measurement.suprailiac    %></li>
+            <li> chest         : <%= measurement.chest         %></li>
+            <li> midaxilary    : <%= measurement.midaxilary    %></li>
+            <li> subscapula    : <%= measurement.subscapula    %></li>
+            <li> bicep         : <%= measurement.bicep         %></li>
+            <li> calf          : <%= measurement.calf          %></li>
+            <li> lowerback     : <%= measurement.lowerback     %></li>
+            <li> annotations   : <%= measurement.annotations   %></li>
+            <li> img_front     : <%= measurement.img_front     %></li>
+            <li> img_side      : <%= measurement.img_side      %></li>
+        </ul>
+    </div>
+    
+<% }) %>
+<% include partials/footer%>
