@@ -113,7 +113,6 @@ app.post("/measurements", function (req, res){
         img_side: img_side,
     };
 
-
     measurements.push(newMeasurement);
 
     // Redirect to measurements page
