@@ -1,7 +1,9 @@
-var express = require("express");
-var app = express();
-var bodyParser = require("body-parser");
+var express      = require("express"),
+    app          = express(),
+    bodyParser   = require("body-parser"),
+    mongoose     = require("mongoose");
 
+mongoose.connect("mongodb://127.0.0.1:27017/bf_db");
 //***************************************
 // Measurement list
 // Main circuits
@@ -19,21 +21,39 @@ var bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extend: true}));
 app.set("view engine", "ejs");
 
-var measurements = [
-    {user: "John", date: "13.11.86", weight: 74, neck: 41, waist:84, hips:102,
-        shoulder:123, chest:97, arm_lef:37, arm_right:"38", forearm_left:28, forearm_right:28, thigh_left:51, thigh_right:49, calve_left:42, calve_right:41, wrist_left:21, wrist_right:21,
-        pectoral:11, abdominal:23, thigh:15, triceps:9, suprailiac:11, chest_s:8, midaxilary:13, subscapula:6, biceps:9, calf:6, lowerback:11,
-        annotations:"Typical measurements in the morning before breakfast", img_front:"Some URL", img_side:"Some URL"},
-    {user: "Antony", date: "13.11.86", weight: 74, neck: 41, waist:84, hips:102,
-        shoulder:123, chest:97, arm_lef:37, arm_right:38, forearm_left:28, forearm_right:28, thigh_left:51, thigh_right:49, calve_left:42, calve_right:41, wrist_left:21, wrist_right:21,
-        pectoral:11, abdominal:23, thigh:15, triceps:9, suprailiac:11, chest_s:8, midaxilary:13, subscapula:6, biceps:9, calf:6, lowerback:11,
-        annotations:"Typical measurements in the morning before breakfast", img_front:"Some URL", img_side:"Some URL"},
-    {user: "Gregory", date: "13.11.86", weight: 74, neck: 41, waist:84, hips:102,
-        shoulder:123, chest:97, arm_lef:37, arm_right:38, forearm_left:28, forearm_right:28, thigh_left:51, thigh_right:49, calve_left:42, calve_right:41, wrist_left:21, wrist_right:21,
-        pectoral:11, abdominal:23, thigh:15, triceps:9, suprailiac:11, chest_s:8, midaxilary:13, subscapula:6, biceps:9, calf:6, lowerback:11,
-        annotations:"Typical measurements in the morning before breakfast", img_front:"Some URL", img_side:"Some URL"},
-];
+// SCHEMA SETUP FOR MEASUREMENT
+var measurementSchema = new mongoose.Schema({
+    user: String, date: String, weight: Number, neck: Number, waist: Number, hips: Number,
+    shoulder: Number, chest: Number, arm_lef: Number, arm_right: Number, forearm_left: Number, forearm_right: Number, thigh_left: Number, thigh_right: Number, calve_left: Number, calve_right: Number, wrist_left: Number, wrist_right: Number,
+    pectoral: Number, abdominal: Number, thigh: Number, triceps: Number, suprailiac: Number, chest_s: Number, midaxilary: Number, subscapula: Number, biceps: Number, calf: Number, lowerback: Number,
+    annotations: String, img_front: String, img_side: String
+});
 
+var Measurement = mongoose.model("Measurement", measurementSchema);
+
+
+//  var a1 =   {user: "John", date: "13.11.86", weight: 74, neck: 41, waist:84, hips:102,
+//         shoulder:123, chest:97, arm_lef:37, arm_right:"38", forearm_left:28, forearm_right:28, thigh_left:51, thigh_right:49, calve_left:42, calve_right:41, wrist_left:21, wrist_right:21,
+//         pectoral:11, abdominal:23, thigh:15, triceps:9, suprailiac:11, chest_s:8, midaxilary:13, subscapula:6, biceps:9, calf:6, lowerback:11,
+//         annotations:"Typical measurements in the morning before breakfast", img_front:"Some URL", img_side:"Some URL"};
+// var a2 =  {user: "Antony", date: "13.11.86", weight: 74, neck: 41, waist:84, hips:102,
+//         shoulder:123, chest:97, arm_lef:37, arm_right:38, forearm_left:28, forearm_right:28, thigh_left:51, thigh_right:49, calve_left:42, calve_right:41, wrist_left:21, wrist_right:21,
+//         pectoral:11, abdominal:23, thigh:15, triceps:9, suprailiac:11, chest_s:8, midaxilary:13, subscapula:6, biceps:9, calf:6, lowerback:11,
+//         annotations:"Typical measurements in the morning before breakfast", img_front:"Some URL", img_side:"Some URL"};
+// var a3 =  {user: "Gregory", date: "13.11.86", weight: 74, neck: 41, waist:84, hips:102,
+//         shoulder:123, chest:97, arm_lef:37, arm_right:38, forearm_left:28, forearm_right:28, thigh_left:51, thigh_right:49, calve_left:42, calve_right:41, wrist_left:21, wrist_right:21,
+//         pectoral:11, abdominal:23, thigh:15, triceps:9, suprailiac:11, chest_s:8, midaxilary:13, subscapula:6, biceps:9, calf:6, lowerback:11,
+//         annotations:"Typical measurements in the morning before breakfast", img_front:"Some URL", img_side:"Some URL"};
+//
+// Measurement.create(a3, function (err, measurement) {
+//    if(err){
+//        console.log("Error accrued");
+//        console.log(err);
+//    } else {
+//        console.log("Added measurement to DB");
+//        console.log(measurement);
+//    }
+// });
 
 app.get("/", function(req, res){
     res.render("landing")
