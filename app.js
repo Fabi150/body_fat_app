@@ -87,17 +87,19 @@ app.get("/", function (req, res) {
     res.render("landing")
 });
 
+// INDEX - show all measurements
 app.get("/measurements", function (req, res) {
     // Get all measurements form DB
     Measurement.find({}, function (err, allMeasurements) {
         if (err) {
             console.log(err)
         } else {
-            res.render("measurements", {measurements: allMeasurements})
+            res.render("index", {measurements: allMeasurements})
         }
     })
 });
 
+// Add new measurement do DB
 app.post("/measurements", function (req, res) {
     // Getting data from form
     var user = req.body.user;
@@ -169,7 +171,7 @@ app.post("/measurements", function (req, res) {
     };
     // Create new measurement and save to DB
     Measurement.create(newMeasurement, function (err, newlyCreated) {
-        if (err){
+        if (err) {
             console.log(err);
         } else {
             res.redirect("measurements")
@@ -179,8 +181,22 @@ app.post("/measurements", function (req, res) {
 
 });
 
+// NEW - Show for to create new measurement
 app.get("/measurements/new", function (req, res) {
     res.render("new_measurement");
+});
+
+// SHOW - showing detail about specific measurement
+app.get("/measurements/:id", function (req, res) {
+    Measurement.findById(req.params.id, function (err, foundMeasurement) {
+        if (err) {
+            console.log(err)
+        } else {
+            res.render("show", {measurement: foundMeasurement});
+        }
+
+    });
+
 });
 
 app.listen(3000, function () {
