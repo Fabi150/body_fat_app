@@ -1,7 +1,8 @@
 var express = require("express"),
     app = express(),
     bodyParser = require("body-parser"),
-    mongoose = require("mongoose");
+    mongoose = require("mongoose"),
+    Measurement = require("./models/measurement");
 
 mongoose.connect("mongodb://127.0.0.1:27017/bf_db");
 //***************************************
@@ -21,43 +22,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/bf_db");
 app.use(bodyParser.urlencoded({extend: true}));
 app.set("view engine", "ejs");
 
-// SCHEMA SETUP FOR MEASUREMENT
-var measurementSchema = new mongoose.Schema({
-    user: String,
-    date: String,
-    weight: Number,
-    neck: Number,
-    waist: Number,
-    hips: Number,
-    shoulder: Number,
-    chest: Number,
-    arm_lef: Number,
-    arm_right: Number,
-    forearm_left: Number,
-    forearm_right: Number,
-    thigh_left: Number,
-    thigh_right: Number,
-    calve_left: Number,
-    calve_right: Number,
-    wrist_left: Number,
-    wrist_right: Number,
-    pectoral: Number,
-    abdominal: Number,
-    thigh: Number,
-    triceps: Number,
-    suprailiac: Number,
-    chest_s: Number,
-    midaxilary: Number,
-    subscapula: Number,
-    biceps: Number,
-    calf: Number,
-    lowerback: Number,
-    annotations: String,
-    img_front: String,
-    img_side: String
-});
 
-var Measurement = mongoose.model("Measurement", measurementSchema);
 
 
 //  var a1 =   {user: "John", date: "13.11.86", weight: 74, neck: 41, waist:84, hips:102,
@@ -94,7 +59,7 @@ app.get("/measurements", function (req, res) {
         if (err) {
             console.log(err)
         } else {
-            res.render("index", {measurements: allMeasurements})
+            res.render("measurements/index", {measurements: allMeasurements})
         }
     })
 });
@@ -183,7 +148,7 @@ app.post("/measurements", function (req, res) {
 
 // NEW - Show for to create new measurement
 app.get("/measurements/new", function (req, res) {
-    res.render("new_measurement");
+    res.render("measurements/new");
 });
 
 // SHOW - showing detail about specific measurement
@@ -192,7 +157,7 @@ app.get("/measurements/:id", function (req, res) {
         if (err) {
             console.log(err)
         } else {
-            res.render("show", {measurement: foundMeasurement});
+            res.render("measurements/show", {measurement: foundMeasurement});
         }
 
     });
