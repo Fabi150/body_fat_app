@@ -4,6 +4,7 @@ var mongoose = require("mongoose"),
 var UserSchema = new mongoose.Schema({
     username: String,
     password: String,
+    email: String,
     born: String,
     gender: String,
     height: Number,

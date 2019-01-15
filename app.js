@@ -142,6 +142,31 @@ app.get("/measurements/:id", function (req, res) {
 
 });
 
+//=========================
+// AUTH ROUTES
+//=========================
+
+//Show register form
+app.get("/register", function (req, res) {
+    res.render("register")
+});
+
+//Handle sign in logic
+app.post("/register", function (req, res) {
+    var newUser = new User({
+        username: req.body.username,
+        email: req.body.email});
+    User.register(newUser, req.body.password, function (err, user) {
+        if (err){
+            console.log(err);
+            return res.render("Register")
+        }
+        passport.authenticate("local")(req, res, function () {
+            res.redirect("/measurements");
+        })
+    });
+});
+
 app.listen(3000, function () {
     console.log("The bodyfat server has started on port 3000. Press ctrl + C to disconnect");
 });
