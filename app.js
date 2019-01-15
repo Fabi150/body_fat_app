@@ -25,25 +25,29 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+app.use(function (req, res, next) {
+    res.locals.currentUser = req.user;
+    next();
+});
 
 app.get("/", function (req, res) {
     res.render("landing")
 });
 
 // INDEX - show all measurements
-app.get("/measurements", function (req, res) {
+app.get("/measurements", isLogedIn, function (req, res) {
     // Get all measurements form DB
     Measurement.find({}, function (err, allMeasurements) {
         if (err) {
             console.log(err)
         } else {
-            res.render("measurements/index", {measurements: allMeasurements})
+            res.render("measurements/index", {measurements: allMeasurements, currentUser: req.user})
         }
     })
 });
 
 // Add new measurement do DB
-app.post("/measurements", function (req, res) {
+app.post("/measurements", isLogedIn, function (req, res) {
     // Getting data from form
     var user = req.body.user;
     var date = req.body.date;
@@ -125,12 +129,12 @@ app.post("/measurements", function (req, res) {
 });
 
 // NEW - Show for to create new measurement
-app.get("/measurements/new", function (req, res) {
+app.get("/measurements/new", isLogedIn, function (req, res) {
     res.render("measurements/new");
 });
 
 // SHOW - showing detail about specific measurement
-app.get("/measurements/:id", function (req, res) {
+app.get("/measurements/:id", isLogedIn, function (req, res) {
     Measurement.findById(req.params.id, function (err, foundMeasurement) {
         if (err) {
             console.log(err)
@@ -184,6 +188,14 @@ app.get("/logout", function (req, res) {
     req.logout();
     res.redirect("/")
 });
+
+function isLogedIn(req, res, next) {
+    if (req.isAuthenticated()){
+        return next();
+    } else {
+        res.redirect("/login")
+    }
+}
 
 app.listen(3000, function () {
     console.log("The bodyfat server has started on port 3000. Press ctrl + C to disconnect");
