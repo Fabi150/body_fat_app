@@ -167,6 +167,24 @@ app.post("/register", function (req, res) {
     });
 });
 
+// Show login form
+app.get("/login", function (req, res) {
+    res.render("login")
+});
+
+app.post("/login", passport.authenticate("local",
+    {successRedirect: "/measurements",
+    failureRedirect: "/login"
+    }), function (req, res) {
+
+});
+
+// Logic roure
+app.get("/logout", function (req, res) {
+    req.logout();
+    res.redirect("/")
+});
+
 app.listen(3000, function () {
     console.log("The bodyfat server has started on port 3000. Press ctrl + C to disconnect");
 });
