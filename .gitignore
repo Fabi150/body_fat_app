@@ -13,6 +13,7 @@ yarn-error.log*
 
 # INTELIJ WebStorm
 .idea
+*___jb_tmp___
 
 # Runtime data
 pids

@@ -1,7 +1,5 @@
-<% include partials/header%>
-<h1>This is measurements page</h1>
-<a href="/new">Add new measurement.</a>
-<% measurements.forEach(function (measurement) { %>
+<% include ../partials/header%>
+<h1>Ths is the sow template.</h1>
     <div>
         <h4><%= measurement.user%></h4>
         <ul>
@@ -39,6 +37,5 @@
             <li> img_side      : <%= measurement.img_side      %></li>
         </ul>
     </div>
-    
-<% }) %>
-<% include partials/footer%>
+
+<% include ../partials/footer%>
