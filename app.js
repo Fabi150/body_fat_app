@@ -1,13 +1,13 @@
-var express             = require("express"),
-    app                 = express(),
-    bodyParser          = require("body-parser"),
-    mongoose            = require("mongoose"),
-    passport            = require("passport"),
-    LocalStrategy       = require("passport-local"),
-    Measurement         = require("./models/measurement"),
-    User                = require("./models/user");
+var express = require("express"),
+    app = express(),
+    bodyParser = require("body-parser"),
+    mongoose = require("mongoose"),
+    passport = require("passport"),
+    LocalStrategy = require("passport-local"),
+    Measurement = require("./models/measurement"),
+    User = require("./models/user");
 
-mongoose.connect("mongodb://127.0.0.1:27017/bf_db", { useNewUrlParser: true });
+mongoose.connect("mongodb://127.0.0.1:27017/bf_db", {useNewUrlParser: true});
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
@@ -35,21 +35,21 @@ app.get("/", function (req, res) {
 });
 
 // INDEX - show all measurements
-app.get("/measurements", isLogedIn, function (req, res) {
-    // Get all measurements form DB
-    Measurement.find({}, function (err, allMeasurements) {
+app.get("/measurements", isLoggedIn, function (req, res) {
+    Measurement.find({user: req.user.id}, function (err, userMeasurements) {
         if (err) {
             console.log(err)
         } else {
-            res.render("measurements/index", {measurements: allMeasurements, currentUser: req.user})
+            res.render("measurements/index", {measurements: userMeasurements, currentUser: req.user})
         }
-    })
+    });
+
 });
 
 // Add new measurement do DB
-app.post("/measurements", isLogedIn, function (req, res) {
+app.post("/measurements", isLoggedIn, function (req, res) {
     // Getting data from form
-    var user = req.body.user;
+    var user = req.user.id;
     var date = req.body.date;
     var weight = req.body.weight;
     var neck = req.body.neck;
@@ -117,29 +117,45 @@ app.post("/measurements", isLogedIn, function (req, res) {
         img_side: img_side,
     };
     // Create new measurement and save to DB
-    Measurement.create(newMeasurement, function (err, newlyCreated) {
+
+    User.findById(req.user.id, function (err, user) {
         if (err) {
             console.log(err);
+            res.redirect("/measurements");
         } else {
-            res.redirect("measurements")
+            Measurement.create(newMeasurement, function (err, newlyCreated) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    user.measurements.push(newlyCreated);
+                    user.save();
+                    res.redirect('/measurements/');
+                }
+            });
         }
-
     });
 
 });
 
 // NEW - Show for to create new measurement
-app.get("/measurements/new", isLogedIn, function (req, res) {
+app.get("/measurements/new", isLoggedIn, function (req, res) {
     res.render("measurements/new");
 });
 
 // SHOW - showing detail about specific measurement
-app.get("/measurements/:id", isLogedIn, function (req, res) {
+app.get("/measurements/:id", isLoggedIn, function (req, res) {
+
     Measurement.findById(req.params.id, function (err, foundMeasurement) {
         if (err) {
             console.log(err)
         } else {
-            res.render("measurements/show", {measurement: foundMeasurement});
+            // check if measurement belong to user that want to show it
+            if (foundMeasurement.user === req.user.id) {
+                res.render("measurements/show", {measurement: foundMeasurement});
+            } else {
+                res.redirect("measurements");
+                console.log("Try to no permission access.")
+            }
         }
 
     });
@@ -159,9 +175,10 @@ app.get("/register", function (req, res) {
 app.post("/register", function (req, res) {
     var newUser = new User({
         username: req.body.username,
-        email: req.body.email});
+        email: req.body.email
+    });
     User.register(newUser, req.body.password, function (err, user) {
-        if (err){
+        if (err) {
             console.log(err);
             return res.render("Register")
         }
@@ -177,8 +194,9 @@ app.get("/login", function (req, res) {
 });
 
 app.post("/login", passport.authenticate("local",
-    {successRedirect: "/measurements",
-    failureRedirect: "/login"
+    {
+        successRedirect: "/measurements",
+        failureRedirect: "/login"
     }), function (req, res) {
 
 });
@@ -189,8 +207,8 @@ app.get("/logout", function (req, res) {
     res.redirect("/")
 });
 
-function isLogedIn(req, res, next) {
-    if (req.isAuthenticated()){
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
         return next();
     } else {
         res.redirect("/login")

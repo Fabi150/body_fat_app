@@ -1,1 +1,4 @@
+* make measurement associate with specific user
+* current user has acces only to his measurements records
+
 1. Add info about user to measurement attributes in DB (age, sex, experience ect...)

@@ -1,5 +1,7 @@
 <% include partials/header %>
 <h1>Welcome in bodyfat app</h1>
 
+<% if(currentUser){ %>
 <a href="/measurements">View all measurements!</a>
+<% } %>
 <% include partials/footer %>

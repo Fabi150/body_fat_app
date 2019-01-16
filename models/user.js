@@ -11,7 +11,14 @@ var UserSchema = new mongoose.Schema({
     units: String,
     timezone: Number,
     avatar: String,
-    experience: Number
+    experience: Number,
+
+    measurements: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Measurement"
+        }
+    ]
 });
 
 UserSchema.plugin(passportLocalMongoose);
